@@ -2,7 +2,8 @@ package com.company;
 
 
 public class Main {
-    private static int[][] matrix = new int[5][5];
+    static int size = 9;
+    private static int[][] matrix = new int[size][size];
 
     private static int[] randomRowPositions = getRandomPositions();
     private static int[] randomColPositions = getRandomPositions();
@@ -11,13 +12,13 @@ public class Main {
         setMatrixWithZeros();
         System.out.println();
 
-        setMatrixWithVals();
+        matrix = setMatrixWithVals();
         printMatrix();
     }
 
     private static void printMatrix() {
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 System.out.print(matrix[i][j]);
                 if (matrix[i][j] >= 0) System.out.print("  ");
                 else System.out.print(" ");
@@ -27,30 +28,30 @@ public class Main {
     }
 
     private static void setMatrixWithZeros() {
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 matrix[i][j] = 0;
             }
         }
     }
 
-    private static void setMatrixWithVals() {
+    private static  int[][] setMatrixWithVals() {
+        int[][] updated = new int[size][size];
         for (int i = 0; i < randomRowPositions.length; i++) {
             int row = randomRowPositions[i];
             int col = randomColPositions[i];
-            matrix[row][col] = row + col % 2 == 0 ? 1 : -1;
+            updated[row][col] = col != 0 ? (row % col == 0 ? 1 : -1) : -1;
         }
+        return updated;
     }
 
 
     private static int[] getRandomPositions() {
-        int[] randomPositions = new int[6];
+        int[] randomPositions = new int[size*3];
 
         for (int i = 0; i < randomPositions.length; i++) {
-            randomPositions[i] = (int) (Math.random() * 4);
-            System.out.print(randomPositions[i]);
+            randomPositions[i] = (int) (Math.random() * size);
         }
-        System.out.println();
         return randomPositions;
     }
 
