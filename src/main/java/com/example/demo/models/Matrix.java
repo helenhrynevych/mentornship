@@ -1,16 +1,17 @@
 package com.example.demo.models;
 
 
+
 import lombok.Data;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.stereotype.Component;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 @Data
-@Component
 public class Matrix {
 	@Id
-	private Long id;
+	private String id;
 	private int[][] data;
 	private int row = 0;
 	private int col = 0;

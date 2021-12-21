@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/matrix")
 public class MatrixController {
 
-	@Autowired
 	MatrixService matrixService;
+
+	@Autowired
+	public MatrixController(MatrixService matrixService) {
+		this.matrixService = matrixService;
+	}
 
 	@GetMapping
 	public Iterable<Matrix> getMatrix() {

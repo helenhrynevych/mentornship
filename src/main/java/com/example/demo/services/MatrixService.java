@@ -19,10 +19,34 @@ public class MatrixService{
 	}
 
 	public Matrix createMatrix() {
-		Matrix matrix = new Matrix(9,9);
-		matrix.setMatrixWithVals();
+		int size = 9;
+		Matrix matrix = new Matrix();
+		matrix.setRow(size);
+		matrix.setCol(size);
+		matrix.setData(generateData(size));
 		matrixRepository.save(matrix);
 		return matrix;
 	}
 
+	private int[][] generateData(int size) {
+		int[] randomRowPositions = getRandomPositions(size);
+		int[] randomColPositions = getRandomPositions(size);
+		int[][] data = new int[size][size];
+
+		for (int i = 0; i < randomRowPositions.length; i++) {
+			int row = randomRowPositions[i];
+			int col = randomColPositions[i];
+			data[row][col] = col != 0 ? (row % col == 0 ? 1 : -1) : -1;
+		}
+		return data;
+	}
+
+	private int[] getRandomPositions(int size) {
+		int[] randomPositions = new int[size * 3];
+
+		for (int i = 0; i < randomPositions.length; i++) {
+			randomPositions[i] = (int) (Math.random() * size);
+		}
+		return randomPositions;
+	}
 }
