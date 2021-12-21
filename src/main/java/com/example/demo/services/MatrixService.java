@@ -1,5 +1,9 @@
 package com.example.demo.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.demo.models.Cell;
 import com.example.demo.models.Matrix;
 import com.example.demo.repositories.MatrixRepository;
 import lombok.AllArgsConstructor;
@@ -26,24 +30,25 @@ public class MatrixService {
 
 	private Matrix getMatrix(int size) {
 		Matrix matrix = new Matrix();
-		matrix.setRow(size);
-		matrix.setCol(size);
-		matrix.setData(generateData(size));
+		matrix.setData(generateData(matrix));
 		matrix.printMatrix();
 		return matrix;
 	}
 
-	private int[][] generateData(int size) {
-		int[] randomRowPositions = getRandomPositions(size);
-		int[] randomColPositions = getRandomPositions(size);
-		int[][] data = new int[size][size];
+	private List<Cell> generateData(Matrix matrix) {
+		int[] randomRowPositions = getRandomPositions(9);
+		int[] randomColPositions = getRandomPositions(9);
 
-		for (int i = 0; i < randomRowPositions.length; i++) {
-			int row = randomRowPositions[i];
-			int col = randomColPositions[i];
-			data[row][col] = col != 0 ? (row % col == 0 ? 1 : -1) : -1;
+		for (int p = 0; p < randomRowPositions.length; p++) {
+			int row = randomRowPositions[p];
+			int col = randomColPositions[p];
+			for (Cell cell : matrix.getData()) {
+				if (cell.getX() == row && cell.getY() == col) {
+					cell.setValue(col != 0 ? (row % col == 0 ? 1 : -1) : -1);
+				}
+			}
 		}
-		return data;
+		return matrix.getData();
 	}
 
 	private int[] getRandomPositions(int size) {
