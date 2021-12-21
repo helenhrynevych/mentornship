@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class MatrixService{
+public class MatrixService {
 
 	@Autowired
 	MatrixRepository matrixRepository;
@@ -19,12 +19,17 @@ public class MatrixService{
 	}
 
 	public Matrix createMatrix() {
-		int size = 9;
+		Matrix matrix = getMatrix(9);
+		matrixRepository.save(matrix);
+		return matrix;
+	}
+
+	private Matrix getMatrix(int size) {
 		Matrix matrix = new Matrix();
 		matrix.setRow(size);
 		matrix.setCol(size);
 		matrix.setData(generateData(size));
-		matrixRepository.save(matrix);
+		matrix.printMatrix();
 		return matrix;
 	}
 
@@ -43,7 +48,6 @@ public class MatrixService{
 
 	private int[] getRandomPositions(int size) {
 		int[] randomPositions = new int[size * 3];
-
 		for (int i = 0; i < randomPositions.length; i++) {
 			randomPositions[i] = (int) (Math.random() * size);
 		}

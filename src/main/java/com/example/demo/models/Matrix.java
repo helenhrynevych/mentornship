@@ -48,25 +48,4 @@ public class Matrix {
 			System.out.println();
 		}
 	}
-
-	public void setMatrixWithVals() {
-		int[] randomRowPositions = getRandomPositions(row);
-		int[] randomColPositions = getRandomPositions(row);
-
-		for (int i = 0; i < randomRowPositions.length; i++) {
-			int row = randomRowPositions[i];
-			int col = randomColPositions[i];
-			this.data[row][col] = col != 0 ? (row % col == 0 ? 1 : -1) : -1;
-		}
-		printMatrix();
-	}
-
-	private int[] getRandomPositions(int size) {
-		int[] randomPositions = new int[size * 3];
-
-		for (int i = 0; i < randomPositions.length; i++) {
-			randomPositions[i] = (int) (Math.random() * size);
-		}
-		return randomPositions;
-	}
 }
