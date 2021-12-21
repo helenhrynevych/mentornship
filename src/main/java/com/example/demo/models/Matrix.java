@@ -1,7 +1,6 @@
 package com.example.demo.models;
 
 
-
 import lombok.Data;
 
 import org.springframework.data.annotation.Id;
@@ -16,7 +15,7 @@ public class Matrix {
 	private int row = 0;
 	private int col = 0;
 
-	public Matrix(){
+	public Matrix() {
 
 	}
 
@@ -38,8 +37,8 @@ public class Matrix {
 	public void printMatrix() {
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < row; j++) {
-				System.out.print(data[i][j]);
-				if (data[i][j] >= 0) {
+				System.out.print(data[j][i]);
+				if (data[j][i] >= 0) {
 					System.out.print("  ");
 				} else {
 					System.out.print(" ");

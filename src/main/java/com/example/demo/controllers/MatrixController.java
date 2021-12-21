@@ -1,6 +1,9 @@
 package com.example.demo.controllers;
 
+import java.util.List;
+
 import com.example.demo.models.Matrix;
+import com.example.demo.models.Team;
 import com.example.demo.services.MatrixService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +31,11 @@ public class MatrixController {
 	@PostMapping
 	public Matrix createMatrix() {
 		return matrixService.createMatrix();
+	}
+
+
+	@GetMapping("/calculate")
+	public List<Team> getPositiveTeamsOfMatrix() {
+		return matrixService.getPositiveTeamsOfMatrix();
 	}
 }
