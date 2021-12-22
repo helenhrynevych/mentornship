@@ -24,6 +24,10 @@ public class Team {
 		this.members.addAll(members);
 	}
 
+	public void addFree(List<Cell> free) {
+		this.free.addAll(free);
+	}
+
 	@Override
 	public String toString() {
 		return "Team{" +

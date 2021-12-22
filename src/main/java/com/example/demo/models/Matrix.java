@@ -12,16 +12,14 @@ public class Matrix {
 	@Id
 	private String id;
 	private int[][] data;
-	private int row = 0;
-	private int col = 0;
+	private int row;
+	private int col;
+	private int size;
 
 	public Matrix() {
-
-	}
-
-	public Matrix(int row, int col) {
-		this.row = row;
-		this.col = col;
+		this.row = 9;
+		this.col = 9;
+		this.size = 9;
 		this.data = new int[row][col];
 		setWithZeros();
 	}
@@ -46,5 +44,26 @@ public class Matrix {
 			}
 			System.out.println();
 		}
+	}
+
+	public void concatTwoMatrixes(Matrix first, Matrix second) {
+		int[][] firstData = first.getData();
+		int[][] secondData = second.getData();
+		int[][] result = new int[size][size];
+
+		//get data from first matrix
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				result[j][i] = firstData[j][i];
+			}
+		}
+		//add data from second matrix
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				result[j][i] = secondData[j][i];
+			}
+		}
+
+		this.data = result;
 	}
 }

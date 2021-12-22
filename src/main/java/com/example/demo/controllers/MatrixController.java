@@ -1,9 +1,7 @@
 package com.example.demo.controllers;
 
-import java.util.List;
 
 import com.example.demo.models.Matrix;
-import com.example.demo.models.Team;
 import com.example.demo.services.MatrixService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +22,17 @@ public class MatrixController {
 	}
 
 	@GetMapping
-	public Iterable<Matrix> getMatrix() {
-		return matrixService.getMatrix();
+	public Iterable<Matrix> getAllMatrixes() {
+		return matrixService.getAllMatrixes();
 	}
 
-	@PostMapping
-	public Matrix createMatrix() {
-		return matrixService.createMatrix();
+	@PostMapping("/init")
+	public Matrix init() {
+		return matrixService.init();
 	}
-
 
 	@GetMapping("/calculate")
-	public List<Team> getPositiveTeamsOfMatrix() {
-		return matrixService.getPositiveTeamsOfMatrix();
+	public Matrix calculate() {
+		return matrixService.calculate();
 	}
 }
