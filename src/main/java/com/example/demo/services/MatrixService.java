@@ -1,8 +1,10 @@
 package com.example.demo.services;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import com.example.demo.models.Cell;
 import com.example.demo.models.Matrix;
@@ -32,9 +34,7 @@ public class MatrixService {
 	public Matrix calculate() {
 		//field
 		Matrix matrix = getMatrix();
-		System.out.println("START");
 		matrix.printMatrix();
-		System.out.println("END");
 		//get teams
 		List<Team> teamsPositive = getTeams(matrix, 1);
 		List<Team> teamsNegative = getTeams(matrix, -1);
@@ -52,13 +52,13 @@ public class MatrixService {
 		return result;
 	}
 
-	private Matrix getMatrixWithFrees(Matrix matrix, List<Team> teamsNegative, int val) {
+	private Matrix getMatrixWithFrees(Matrix matrix, List<Team> teams, int val) {
 		int[][] data = matrix.getData();
-		for (Team team : teamsNegative) {
-			int freeSize = team.getFree().size();
+		for (Team team : teams) {
 			List<Cell> members = team.getMembers();
 			for (Cell mem : members) {
-				data[mem.getX()][mem.getY()] = val > 0 ? freeSize : -freeSize;
+				int freeSize = team.getFree().size();
+				data[mem.getX()][mem.getY()] = freeSize * val;
 			}
 		}
 		matrix.setData(data);
@@ -66,28 +66,40 @@ public class MatrixService {
 	}
 
 	public List<Team> getTeams(Matrix matrixx, int val) {
-		int[][] matrix = matrixx.getData();
+		int[][] matrix = copyOf(matrixx.getData());
+		int[][] matrixCopy = copyOf(matrixx.getData());
+
 		List<Team> teams = new ArrayList<>();
 
 		for (int y = 0; y < 9; y++) {
 			for (int x = 0; x < 9; x++) {
-				if (matrix[x][y] == val) {
+				if (matrixCopy[x][y] == val) {
 					List<Cell> members = new ArrayList<>();
-					List<Cell> freeList = new ArrayList<>();
+					Set<Cell> freeList = new HashSet<>();
 
 					members.add(new Cell(x, y, val, true));
-					getAllTeammates(matrix, members, y, x, val);
+					getAllTeammates(matrixCopy, members, y, x, val);
 
 					Team team = new Team();
-					getTeamFrees(matrix, freeList, y, x);
+					getTeamFrees(matrix, members, freeList, y, x);
 					team.addMembers(members);
 					team.addFree(freeList);
-
 					teams.add(team);
 				}
 			}
 		}
 		return teams;
+	}
+
+	private int[][] copyOf(int[][] data) {
+		int[][] copy = new int[9][9];
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				copy[i][j] = data[i][j];
+			}
+		}
+		System.out.println("COPY OF:");
+		return copy;
 	}
 
 	private void getAllTeammates(int[][] data, List<Cell> members, int y, int x, int val) {
@@ -104,26 +116,14 @@ public class MatrixService {
 		getAllTeammates(data, members, cell.get().getY(), cell.get().getX(), val);
 	}
 
-//	private void getTeamFees(int[][] data, Team team) {
-//		for (Cell member : team.getMembers()) {
-//			team.addFree(getFrees(data, team.getFree(), member.getY(), member.getX()));
-//		}
-//	}
 
-	private void getTeamFrees(int[][] data, List<Cell> free, int y, int x) {
-		getFrees(data, free, y, x);
-		Optional<Cell> checkedCell = free.stream().filter(member -> member.getX() == x && member.getY() == y)
-				.findFirst();
-		checkedCell.ifPresent(cell -> cell.setChecked(true));
-
-		Optional<Cell> cell = free.stream().filter(member -> !member.isChecked()).findFirst();
-		if (cell.isEmpty()) {
-			return;
+	private void getTeamFrees(int[][] data, List<Cell> members, Set<Cell> free, int y, int x) {
+		for (Cell member : members) {
+			getFrees(data, free, member.getY(), member.getX());
 		}
-		getTeamFrees(data, free, cell.get().getY(), cell.get().getX());
 	}
 
-	private List<Cell> getFrees(int[][] data, List<Cell> free, int y, int x) {
+	private Set<Cell> getFrees(int[][] data, Set<Cell> free, int y, int x) {
 		//check left
 		if (y != 0) {
 			if (data[x][y - 1] == 0) {
@@ -149,9 +149,7 @@ public class MatrixService {
 				free.add(new Cell(x + 1, y, 0, true));
 			}
 		}
-
 		return free;
-
 	}
 
 	private void getNeighbours(int[][] data, List<Cell> members, int y, int x, int val) {
