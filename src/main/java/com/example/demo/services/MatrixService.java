@@ -8,7 +8,9 @@ import java.util.Set;
 
 import com.example.demo.models.Cell;
 import com.example.demo.models.Matrix;
+import com.example.demo.models.Node;
 import com.example.demo.models.Team;
+import com.example.demo.models.UnidirectionalLinkedList;
 import com.example.demo.repositories.MatrixRepository;
 import lombok.AllArgsConstructor;
 
@@ -52,7 +54,23 @@ public class MatrixService {
 		return result;
 	}
 
-	private Matrix getMatrixWithFrees(Matrix matrix, List<Team> teams, int val) {
+	public void list() {
+		UnidirectionalLinkedList list = new UnidirectionalLinkedList();
+		Node n1 = new Node(1);
+		Node n2 = new Node(2);
+		Node n3 = new Node(3);
+
+		UnidirectionalLinkedList.insert(list,n1);
+		UnidirectionalLinkedList.insert(list,n2);
+		UnidirectionalLinkedList.insert(list,n3);
+
+		UnidirectionalLinkedList.printList(list);
+
+		System.out.println("getFirst:");
+		System.out.println(list.getFirst());
+	}
+
+		private Matrix getMatrixWithFrees(Matrix matrix, List<Team> teams, int val) {
 		int[][] data = matrix.getData();
 		for (Team team : teams) {
 			List<Cell> members = team.getMembers();
